@@ -19,13 +19,14 @@
             justify-content: center; /* Center items horizontally */
             justify-items: center;  /* Center the items in each cell */
             align-items: center;
-            height: auto;
+            height: fit-content;
             max-width: 100%;
         }
         .box {
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         .image {
             width: 100%;
@@ -37,37 +38,37 @@
 </head>
 <body>
     <section class="container">
-        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/300" alt="1"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/300" alt="2"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/300" alt="3"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/300" alt="4"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/300" alt="5"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/300" alt="6"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/300" alt="7"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/300" alt="8"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/300" alt="9"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/300" alt="10"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/300" alt="11"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/300" alt="12"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/300" alt="13"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/300" alt="6"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/300" alt="7"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/300" alt="8"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/300" alt="9"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/300" alt="10"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/300" alt="11"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/300" alt="12"></div>
-
+        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/500" alt="1"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/500" alt="2"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/500" alt="3"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/500" alt="4"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/500" alt="5"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="6"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="7"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="8"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="9"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="10"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="11"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="12"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/500" alt="13"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="6"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="7"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="8"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="9"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="10"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="11"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="12"></div>
     </section>
 </body>
 <script>
     const container = document.querySelector(".container");
     const images = container.querySelectorAll(".image");
 
-    const gridFormat = 1; // 1 = checkerboard, 0 = regular grid (how the elements should be placed on the page)
+
+    const gridFormat = true; // 1 = checkerboard, 0 = regular grid (how the elements should be placed on the page)
     const paramOffsetX = 20; // 0 - 200 (how much offset the images should have on the X-axis)
     const paramOffsetY = 20; // 0 - 200 (how much offset the images should have on the Y-axis)
-    const paramScale = 0.5; // 0 - 2 (how much the images should be scaled)
+    const paramScale = 0.7; // 0 - 2 (how much the images should be scaled)
 
     const cleanCut = true; // This will control whether we only display full rows
 
@@ -77,8 +78,6 @@
     const GapYaxis = "0vw"; // 0 - 70 (gap between images on the Y-axis)
 
     const ContainerWidth = "80vw"; // 0 - 100 - fit-content (width of the container/grid)
-    const ContainerHeight = "fit-content"; // 0 - 100 - fit-content (height of the container/grid)
-
 
     const grid = [
         { "max-width": 760, "columns": 2, "rows": 2 }, 
@@ -89,85 +88,113 @@
         { "max-width": 3840, "columns": 8 }
     ];
     
+  
 
-    windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
-
-    
-    function updateGrid() {
+function repositionImages() {
+    let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
     let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
     let selectedConfig = grid.find(g => gridWidth <= g["max-width"]) || grid[grid.length - 1];
-    let columns = selectedConfig.columns;
-    let rows = selectedConfig.rows || "auto"; // Use predefined rows if available
+    let columns = selectedConfig.columns
 
     let numImages = images.length;
-    let calculatedRows = Math.floor(numImages / columns); // Count only full rows
+    let numRows = Math.ceil(numImages / columns);
+
+    let containerWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
+    let boxWidth = containerWidth / columns;
+    let halfBoxWidth = boxWidth / 8;
+
+    const existingClones = container.querySelectorAll('.cloned-box');
+    existingClones.forEach(clone => clone.remove());
+
+    images.forEach((img, index) => {
+        
+        let rowIndex = Math.floor(index / columns);
+        let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
+        let offsetY = (Math.random() - 0.5) * paramOffsetY;
+        let scale = (Math.random() * 0.5) + paramScale;
+
+        img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
+
+        if (rowIndex % 2 === 1 && (index % columns === columns - 1)&& gridFormat === true) {
+            img.style.opacity = "0"; 
+
+            const clonedImage = img.cloneNode(true);
+            clonedImage.style.opacity = "1"; 
+            clonedImage.style.transform = "none"; 
+
+            let clonedRowIndex = Math.floor((images.length + 1) / columns); 
+            let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
+            let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
+            let clonedScale = (Math.random() * 0.5) + paramScale;
+
+            clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${clonedScale})`;
+
+            const clonedBox = document.createElement('div');
+            clonedBox.classList.add('box', 'cloned-box'); 
+            clonedBox.appendChild(clonedImage);
+
+            container.appendChild(clonedBox);
+        } else {
+            img.style.opacity = "1"; 
+        }
+        const boxes = container.querySelectorAll(".box");
+        boxes.forEach((box) => {
+
+            img.style.aspectRatio = boxAspectRatio;
+            let zIndex = Math.floor(Math.random() * 10);
+            box.style.zIndex = zIndex;
+        });
+
+        additionalImages = boxes.length - images.length;
+        updateGrid(additionalImages, columns);
+    });
+}
+
+
+ 
+function updateGrid(additionalImages, columns) {
+    
+    let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
+    let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
+    let selectedConfig = grid.find(g => gridWidth <= g["max-width"]) || grid[grid.length - 1];
+    
+    let rows = selectedConfig.rows || "auto";
+
+    let numImages = images.length;
+    let calculatedRows = Math.floor(numImages / columns);
     let remainingImages = numImages % columns;
 
-    // If `rows` is explicitly set, use it. Otherwise, ensure only full rows
     let finalRows;
     if (rows === "auto") {
-        finalRows = calculatedRows; // Remove incomplete row
+        finalRows = calculatedRows; 
     } else {
         if (images.length < (columns * rows) && cleanCut == true) {
-            finalRows = Math.floor(images.length / columns); // Reduce to fit full rows only
+            finalRows = Math.floor(images.length / columns); 
         } else {
             finalRows = rows;
         }
     }
 
-    let finalImageCount = finalRows * columns; // Ensure only full rows are visible
-
-    console.log(`Full rows possible: ${finalRows}`);
-    console.log(`Images left out (not forming a full row): ${remainingImages}`);
-    console.log(`Final image count (only full rows): ${finalImageCount}`);
+    let finalImageCount = finalRows * columns;
+ 
+    const boxes = container.querySelectorAll(".box");
 
     container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-    container.style.gridTemplateRows = `repeat(${finalRows}, 1fr)`; // Dynamically set the row count
+    container.style.gridTemplateRows = `repeat(${finalRows}, 1fr)`;
     container.style.gap = `${GapYaxis} ${GapXaxis}`;
     container.style.width = ContainerWidth;
-    container.style.height = "auto"; // Ensure dynamic resizing
-
-    // Hide images that are in incomplete rows (those that don't form a full row)
-        images.forEach((img, index) => {
+    container.style.height = "auto";
+        boxes.forEach((img, index) => {
             if (index >= finalImageCount) {
-                img.style.display = "none"; // Hide images that don't fit in full rows
+                img.style.display = "none"; 
             } else {
-                img.style.display = "block"; // Show images in full rows
+                img.style.display = "block";
             }
         });
-    repositionImages(columns);
 }
-
-    function repositionImages(columns) {
-      
-
-        let numImages = images.length;
-        let numRows = Math.ceil(numImages / columns);
-
-        let containerWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
-        let boxWidth = containerWidth / columns;
-        let halfBoxWidth = boxWidth / 8;
-
-        let firstRowDirection = Math.random() < 0.5 ? 1 : -1;
-
-        images.forEach((img, index) => {
-            let zIndex = Math.floor(Math.random() * 3);
-            img.style.zIndex = zIndex;
-            
-            let rowIndex = Math.floor(index / columns);
-            let offsetX = (rowIndex % 2 === 0 ? firstRowDirection : -firstRowDirection) * (gridFormat * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
-            let offsetY = (Math.random() - 0.5) * paramOffsetY;
-            let scale = (Math.random() * 0.5) + paramScale;
-
-            img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
-        });
-    }
-
-    window.addEventListener("resize", updateGrid);
-    window.onload = () => {
-    updateGrid();
-    window.dispatchEvent(new Event("resize")); // Forces recalculation
-};
+document.addEventListener("DOMContentLoaded", repositionImages);
+window.addEventListener("resize", repositionImages);
+repositionImages();
 
 
 </script>
