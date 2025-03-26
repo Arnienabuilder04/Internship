@@ -39,7 +39,7 @@
             display: none;
         }
 
-        .box p{
+        .box p, .cloned-text{
             position: absolute;
             bottom: 50%;
             left: 0;
@@ -53,6 +53,10 @@
 
         .box:hover p{
             display: block;
+        }
+
+        .cloned-text{
+            z-index: 20;
         }
     </style>
 </head>
@@ -84,7 +88,7 @@
     const paramOffsetY = 0; // 0 - 200 (how much offset the images should have on the Y-axis)
     const paramScale = 0.5; // 0 - 2 (how much the images should be scaled)
 
-    const cleanCut = false; // This will control whether we only display full rows
+    const cleanCut = true; // This will control whether we only display full rows
 
     const boxAspectRatio = "1 / 1"; // 1 / 1 (aspect ratio of the images)
 
@@ -98,7 +102,7 @@
         { "max-width": 1280, "columns": 3 , "rows": 3 }, 
         { "max-width": 1660, "columns": 4}, 
         { "max-width": 1920, "columns": 8}, 
-        { "max-width": 2560, "columns": 6 , "rows": 4 }, 
+        { "max-width": 2560, "columns": 6 , "rows": 3 }, 
         { "max-width": 3840, "columns": 8 }
     ];
     
@@ -119,7 +123,7 @@ function repositionImages() {
        
 
         let rowIndex = Math.floor(index / columns);
-        let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
+        let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth +13) + (Math.random() - 0.5) * paramOffsetX;
         let offsetY = (Math.random() - 0.5) * paramOffsetY;
         let scale = (Math.random() * 0.5) + paramScale;
 
@@ -129,10 +133,35 @@ function repositionImages() {
             caption.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${1})`; 
         }
 
-        if (rowIndex % 2 === 1 && (index % columns === columns - 1)&& gridFormat === true) {
+        if (rowIndex % 2 === 1 && (index % columns === columns - 1) && gridFormat === true) {
             img.style.opacity = "0"; 
+            if (img.nextElementSibling) {
+                img.nextElementSibling.style.display = "none"; // Hide text
+            }
+
+
+            const clonedBox = document.createElement('div');
+            clonedBox.classList.add('box', 'cloned-box'); 
 
             const clonedImage = img.cloneNode(true);
+
+            // Clone and append the text if it exists
+            if (img.nextElementSibling) {
+                const clonedText = img.nextElementSibling.cloneNode(true);
+                clonedText.style.display = "none"; // Initially hide the text
+                clonedText.classList.add('cloned-text');
+                clonedBox.appendChild(clonedText);
+
+                // **Ensure hover effect for cloned elements**
+                clonedBox.addEventListener("mouseenter", () => {
+                    clonedText.style.display = "block";
+                });
+                clonedBox.addEventListener("mouseleave", () => {
+                    clonedText.style.display = "none";
+                });
+            }
+
+            
             clonedImage.style.opacity = "1"; 
             clonedImage.style.transform = "none"; 
 
@@ -142,11 +171,12 @@ function repositionImages() {
             let clonedScale = (Math.random() * 0.5) + paramScale;
 
             clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${clonedScale})`;
-
-            const clonedBox = document.createElement('div');
-            clonedBox.classList.add('box', 'cloned-box'); 
+            if (clonedBox.querySelector('.cloned-text')) {
+                let caption = clonedBox.querySelector('.cloned-text');
+                caption.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${1})`; 
+            }
+           
             clonedBox.appendChild(clonedImage);
-
             container.appendChild(clonedBox);
         } else {
             img.style.opacity = "1"; 
