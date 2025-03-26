@@ -34,43 +34,62 @@
             object-fit: contain;
             transition: transform 0.5s ease-in-out;
         }
+
+        .hide {
+            display: none;
+        }
+
+        .box p{
+            position: absolute;
+            bottom: 50%;
+            left: 0;
+            right: 0;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .box:hover p{
+            display: block;
+        }
     </style>
 </head>
 <body>
     <section class="container">
-        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/500" alt="1"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/500" alt="2"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/500" alt="3"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/500" alt="4"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/500" alt="5"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="6"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="7"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="8"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="9"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="10"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="11"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="12"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/500" alt="13"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="6"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="7"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="8"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="9"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="10"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="11"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="12"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/500" alt="test 01"><p class="hide">test 01</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/500" alt="test 02"><p class="hide">test 02</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/500" alt="test 03"><p class="hide">test 03</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/500" alt="test 04"><p class="hide">test 04</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/500" alt="test 05"><p class="hide">test 05</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 06"><p class="hide">test 06</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 07"><p class="hide">test 07</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="test 08"><p class="hide">test 08</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="test 09"><p class="hide">test 09</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="test 10"><p class="hide">test 10</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="test 11"><p class="hide">test 11</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="test 12"><p class="hide">test 12</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/500" alt="test 13"><p class="hide">test 13</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 14"><p class="hide">test 14</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 15"><p class="hide">test 15</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="test 16"><p class="hide">test 16</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="test 17"><p class="hide">test 17</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="test 18"><p class="hide">test 18</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="test 19"><p class="hide">test 19</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="test 20"><p class="hide">test 20</p></div>
     </section>
 </body>
 <script>
     const container = document.querySelector(".container");
     const images = container.querySelectorAll(".image");
 
-
     const gridFormat = true; // 1 = checkerboard, 0 = regular grid (how the elements should be placed on the page)
-    const paramOffsetX = 20; // 0 - 200 (how much offset the images should have on the X-axis)
-    const paramOffsetY = 20; // 0 - 200 (how much offset the images should have on the Y-axis)
-    const paramScale = 0.7; // 0 - 2 (how much the images should be scaled)
+    const paramOffsetX = 0; // 0 - 200 (how much offset the images should have on the X-axis)
+    const paramOffsetY = 0; // 0 - 200 (how much offset the images should have on the Y-axis)
+    const paramScale = 0.5; // 0 - 2 (how much the images should be scaled)
 
-    const cleanCut = true; // This will control whether we only display full rows
+    const cleanCut = false; // This will control whether we only display full rows
 
     const boxAspectRatio = "1 / 1"; // 1 / 1 (aspect ratio of the images)
 
@@ -88,8 +107,6 @@
         { "max-width": 3840, "columns": 8 }
     ];
     
-  
-
 function repositionImages() {
     let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
     let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
@@ -107,13 +124,14 @@ function repositionImages() {
     existingClones.forEach(clone => clone.remove());
 
     images.forEach((img, index) => {
-        
+        let caption = img.nextElementSibling; // Get the text element (p tag)
         let rowIndex = Math.floor(index / columns);
         let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
         let offsetY = (Math.random() - 0.5) * paramOffsetY;
         let scale = (Math.random() * 0.5) + paramScale;
 
         img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
+        caption.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${1})`; 
 
         if (rowIndex % 2 === 1 && (index % columns === columns - 1)&& gridFormat === true) {
             img.style.opacity = "0"; 
