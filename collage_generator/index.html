@@ -85,10 +85,12 @@
 
     const gridFormat = true; // 1 = checkerboard, 0 = regular grid (how the elements should be placed on the page)
     const paramOffsetX = 0; // 0 - 200 (how much offset the images should have on the X-axis)
-    const paramOffsetY = 0; // 0 - 200 (how much offset the images should have on the Y-axis)
-    const paramScale = 0.5; // 0 - 2 (how much the images should be scaled)
+    const paramOffsetY = 20; // 0 - 200 (how much offset the images should have on the Y-axis)
+    const paramScale = {min:0.7, max:1}; // 0 - 2 (how much the images should be scaled)
+    const paramChance = false //[0.1,0.1,0.1,0.8] // chance of applying a certain scale value - false if not used
 
-    const cleanCut = true; // This will control whether we only display full rows
+    const firstRow = true; // Whether the first row should be offset
+    const cleanCut = false; // This will control whether we only display full rows
 
     const boxAspectRatio = "1 / 1"; // 1 / 1 (aspect ratio of the images)
 
@@ -105,7 +107,8 @@
         { "max-width": 2560, "columns": 6 , "rows": 3 }, 
         { "max-width": 3840, "columns": 8 }
     ];
-    
+
+
 function repositionImages() {
     let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
     let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
@@ -119,13 +122,29 @@ function repositionImages() {
     const existingClones = container.querySelectorAll('.cloned-box');
     existingClones.forEach(clone => clone.remove());
 
+    function map(value, { min, max }) {
+        return (value * (max - min)) + min;
+    }
+
+
+
     images.forEach((img, index) => {
+        let mappedValue;
+        if (paramChance){
+            let i = Math.floor(Math.random() * paramChance.length);
+            mappedValue = paramChance[i]
+        }else{
+            let random = Math.random();
+            mappedValue = map(random, { min: paramScale.min, max: paramScale.max });
+        }
        
 
         let rowIndex = Math.floor(index / columns);
         let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth +13) + (Math.random() - 0.5) * paramOffsetX;
-        let offsetY = (Math.random() - 0.5) * paramOffsetY;
-        let scale = (Math.random() * 0.5) + paramScale;
+        let offsetY = (rowIndex === 0 && firstRow)
+        ? Math.abs((Math.random() - 0.5) * paramOffsetY) 
+        : (Math.random() - 0.5) * paramOffsetY;
+        let scale = mappedValue;
 
         img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
         if (img.nextElementSibling) {
@@ -168,7 +187,7 @@ function repositionImages() {
             let clonedRowIndex = Math.floor((images.length + 1) / columns); 
             let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
             let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
-            let clonedScale = (Math.random() * 0.5) + paramScale;
+            let clonedScale = mappedValue;
 
             clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${clonedScale})`;
             if (clonedBox.querySelector('.cloned-text')) {
@@ -183,11 +202,17 @@ function repositionImages() {
         }
         const boxes = container.querySelectorAll(".box");
         boxes.forEach((box) => {
-
             img.style.aspectRatio = boxAspectRatio;
-            let zIndex = Math.floor(Math.random() * 10);
-            box.style.zIndex = zIndex;
+
+            box.style.zIndex = Math.floor(Math.random() * 3);
+        
+            box.addEventListener("mouseenter", () => {
+                let highestZIndex = Math.max(...Array.from(boxes).map(b => parseInt(b.style.zIndex) || 0));
+
+                box.style.zIndex = highestZIndex + 1;
+            });
         });
+
 
         additionalImages = boxes.length - images.length;
         updateGrid(additionalImages, columns);
@@ -206,7 +231,6 @@ function updateGrid(additionalImages, columns) {
 
     let numImages = images.length;
     let calculatedRows = Math.ceil(numImages / columns); // Round up to ensure all images are used
-    console.log(rows, numImages, calculatedRows);
     let remainingImages = numImages % columns;
 
     let finalRows;
