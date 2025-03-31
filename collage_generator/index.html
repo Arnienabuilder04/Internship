@@ -109,17 +109,17 @@
     const container = document.querySelector(".container");
     const images = container.querySelectorAll(".image");
 
-    const gridFormat = true;
-    const paramOffsetX = 40;
-    const paramOffsetY = 40;
-    const paramScale = {min:1, max:1.5};
-    //const paramScale = [0.1,0.1,0.1,1];
-    const firstRow = true;
-    const cleanCut = false;
-    const boxAspectRatio = "2 / 3";
-    const GapXaxis = "0vw";
-    const GapYaxis = "0vw";
-    const ContainerWidth = "100vw";
+    const gridFormat = true; // true(checkerboard) or false(regular grid)
+    const paramOffsetX = 40; // offset value for x-axis
+    const paramOffsetY = 40; // offset value for y-axis
+    const paramScale = {min:1, max:1.5}; // scale value for images min: minimum scale value, max: maximum scale value
+    //const paramScale = [0.1,0.1,0.1,1]; // scale value for images amount of value = chance of that specific scale
+    const firstRow = true; // true(always positive Y axis offset for first row) or false
+    const cleanCut = false; //true(let grid always end in a full row)
+    const boxAspectRatio = "2 / 3"; // aspect ratio for the boxes
+    const GapXaxis = "0vw"; // gap between the boxes on the x-axis
+    const GapYaxis = "0vw"; // gap between the boxes on the y-axis
+    const ContainerWidth = "100vw"; // width of the container
 
     const grid = [
         { "max-width": 760, "columns": 2, "rows": 2 }, 
