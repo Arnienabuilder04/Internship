@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collage Generator</title>
+    <style>
+        body, html {
+            width: 100vw;
+            min-height: 100vh;
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            display: grid;
+            align-content: center; /* Center items vertically */
+            justify-content: center; /* Center items horizontally */
+            justify-items: center;  /* Center the items in each cell */
+            align-items: center;
+            height: fit-content;
+            max-width: 100%;
+        }
+        .box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .box p, .cloned-text{
+            position: absolute;
+            bottom: 50%;
+            left: 0;
+            right: 0;
+            color: black;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        .box:hover p{
+            display: block;
+        }
+
+        .cloned-text{
+            z-index: 20;
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/500" alt="test 01"></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/500" alt="test 02"><p class="hide">test 02</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/500" alt="test 03"><p class="hide">test 03</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/500" alt="test 04"><p class="hide">test 04</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/500" alt="test 05"><p class="hide">test 05</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 06"><p class="hide">test 06</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 07"><p class="hide">test 07</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="test 08"><p class="hide">test 08</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="test 09"><p class="hide">test 09</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="test 10"><p class="hide">test 10</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="test 11"><p class="hide">test 11</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="test 12"><p class="hide">test 12</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/500" alt="test 13"><p class="hide">test 13</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 14"><p class="hide">test 14</p></div>
+        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 15"><p class="hide">test 15</p></div>
+    </section>
+</body>
+<script>
+    const container = document.querySelector(".container");
+    const images = container.querySelectorAll(".image");
+
+    const gridFormat = true; // 1 = checkerboard, 0 = regular grid (how the elements should be placed on the page)
+    const paramOffsetX = 0; // 0 - 200 (how much offset the images should have on the X-axis)
+    const paramOffsetY = 20; // 0 - 200 (how much offset the images should have on the Y-axis)
+    const paramScale = {min:0.7, max:1}; // 0 - 2 (how much the images should be scaled)
+    const paramChance = false //[0.1,0.1,0.1,0.8] // chance of applying a certain scale value - false if not used
+
+    const firstRow = true; // Whether the first row should be offset
+    const cleanCut = false; // This will control whether we only display full rows
+
+    const boxAspectRatio = "1 / 1"; // 1 / 1 (aspect ratio of the images)
+
+    const GapXaxis = "0vw"; // 0 - 70 (gap between images on the X-axis)
+    const GapYaxis = "0vw"; // 0 - 70 (gap between images on the Y-axis)
+
+    const ContainerWidth = "80vw"; // 0 - 100 - fit-content (width of the container/grid)
+
+    const grid = [
+        { "max-width": 760, "columns": 2, "rows": 2 }, 
+        { "max-width": 1280, "columns": 3 , "rows": 3 }, 
+        { "max-width": 1660, "columns": 4}, 
+        { "max-width": 1920, "columns": 8}, 
+        { "max-width": 2560, "columns": 6 , "rows": 3 }, 
+        { "max-width": 3840, "columns": 8 }
+    ];
+
+
+function repositionImages() {
+    let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
+    let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
+    let selectedConfig = grid.find(g => gridWidth <= g["max-width"]) || grid[grid.length - 1];
+    let columns = selectedConfig.columns
+
+    let containerWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
+    let boxWidth = containerWidth / columns;
+    let halfBoxWidth = boxWidth / 8;
+
+    const existingClones = container.querySelectorAll('.cloned-box');
+    existingClones.forEach(clone => clone.remove());
+
+    function map(value, { min, max }) {
+        return (value * (max - min)) + min;
+    }
+
+
+
+    images.forEach((img, index) => {
+        let mappedValue;
+        if (paramChance){
+            let i = Math.floor(Math.random() * paramChance.length);
+            mappedValue = paramChance[i]
+        }else{
+            let random = Math.random();
+            mappedValue = map(random, { min: paramScale.min, max: paramScale.max });
+        }
+       
+
+        let rowIndex = Math.floor(index / columns);
+        let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth +13) + (Math.random() - 0.5) * paramOffsetX;
+        let offsetY = (rowIndex === 0 && firstRow)
+        ? Math.abs((Math.random() - 0.5) * paramOffsetY) 
+        : (Math.random() - 0.5) * paramOffsetY;
+        let scale = mappedValue;
+
+        img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
+        if (img.nextElementSibling) {
+            let caption = img.nextElementSibling;
+            caption.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${1})`; 
+        }
+
+        if (rowIndex % 2 === 1 && (index % columns === columns - 1) && gridFormat === true) {
+            img.style.opacity = "0"; 
+            if (img.nextElementSibling) {
+                img.nextElementSibling.style.display = "none"; // Hide text
+            }
+
+
+            const clonedBox = document.createElement('div');
+            clonedBox.classList.add('box', 'cloned-box'); 
+
+            const clonedImage = img.cloneNode(true);
+
+            // Clone and append the text if it exists
+            if (img.nextElementSibling) {
+                const clonedText = img.nextElementSibling.cloneNode(true);
+                clonedText.style.display = "none"; // Initially hide the text
+                clonedText.classList.add('cloned-text');
+                clonedBox.appendChild(clonedText);
+
+                // **Ensure hover effect for cloned elements**
+                clonedBox.addEventListener("mouseenter", () => {
+                    clonedText.style.display = "block";
+                });
+                clonedBox.addEventListener("mouseleave", () => {
+                    clonedText.style.display = "none";
+                });
+            }
+
+            
+            clonedImage.style.opacity = "1"; 
+            clonedImage.style.transform = "none"; 
+
+            let clonedRowIndex = Math.floor((images.length + 1) / columns); 
+            let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1) * (Number(gridFormat) * halfBoxWidth) + (Math.random() - 0.5) * paramOffsetX;
+            let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
+            let clonedScale = mappedValue;
+
+            clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${clonedScale})`;
+            if (clonedBox.querySelector('.cloned-text')) {
+                let caption = clonedBox.querySelector('.cloned-text');
+                caption.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${1})`; 
+            }
+           
+            clonedBox.appendChild(clonedImage);
+            container.appendChild(clonedBox);
+        } else {
+            img.style.opacity = "1"; 
+        }
+        const boxes = container.querySelectorAll(".box");
+        boxes.forEach((box) => {
+            img.style.aspectRatio = boxAspectRatio;
+
+            box.style.zIndex = Math.floor(Math.random() * 3);
+        
+            box.addEventListener("mouseenter", () => {
+                let highestZIndex = Math.max(...Array.from(boxes).map(b => parseInt(b.style.zIndex) || 0));
+
+                box.style.zIndex = highestZIndex + 1;
+            });
+        });
+
+
+        additionalImages = boxes.length - images.length;
+        updateGrid(additionalImages, columns);
+    });
+}
+
+
+ 
+function updateGrid(additionalImages, columns) {
+    
+    let windowWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
+    let gridWidth = container.clientWidth ? container.clientWidth : windowWidth;
+    let selectedConfig = grid.find(g => gridWidth <= g["max-width"]) || grid[grid.length - 1];
+    
+    let rows = selectedConfig.rows || "auto";
+
+    let numImages = images.length;
+    let calculatedRows = Math.ceil(numImages / columns); // Round up to ensure all images are used
+    let remainingImages = numImages % columns;
+
+    let finalRows;
+    if (rows === "auto") {
+        finalRows = calculatedRows; 
+    } else {
+        if (images.length < (columns * rows) && cleanCut == true) {
+            finalRows = Math.floor(images.length / columns); 
+        } else {
+            finalRows = rows;
+        }
+    }
+
+    let finalImageCount = finalRows * columns;
+ 
+    const boxes = container.querySelectorAll(".box");
+
+    container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+    container.style.gridTemplateRows = `repeat(${finalRows}, 1fr)`;
+    container.style.gap = `${GapYaxis} ${GapXaxis}`;
+    container.style.width = ContainerWidth;
+    container.style.height = "auto";
+        boxes.forEach((img, index) => {
+            if (index >= finalImageCount) {
+                img.style.display = "none"; 
+            } else {
+                img.style.display = "block";
+            }
+        });
+}
+document.addEventListener("DOMContentLoaded", repositionImages);
+window.addEventListener("resize", repositionImages);
+repositionImages();
+
+
+</script>
+</html>
