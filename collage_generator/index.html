@@ -290,91 +290,83 @@
 });
 
 function enableImageDrag() {
-    const images = document.querySelectorAll(".image");
-    let isDragging = false;
-    let currentImage = null;
-    let startX = 0, startY = 0;
-    let initialOffsetX = 0, initialOffsetY = 0;
-    let moved = false;
+        const images = document.querySelectorAll(".image");
+        let isDragging = false;
+        let currentImage = null;
+        let startX = 0, startY = 0;
+        let initialOffsetX = 0, initialOffsetY = 0;
+        let moved = false;
 
-    function getHighestZIndex() {
-    let highestZIndex = 0;
-    document.querySelectorAll(".image").forEach(imageDiv => { // Target .image elements
-        const zIndex = parseInt(window.getComputedStyle(imageDiv).zIndex, 10) || 0;
-        highestZIndex = Math.max(highestZIndex, zIndex);
-    });
-    return highestZIndex;
-}
-
-function startDrag(e) {
-    if (e.type === "mousedown" && e.button !== 0) return; // Ignore right-clicks
-
-    isDragging = true;
-    currentImage = e.target.closest(".image"); // Get the closest .image container
-    moved = false;
-
-    const touch = e.touches ? e.touches[0] : e;
-    startX = touch.clientX;
-    startY = touch.clientY;
-
-    // Get the highest z-index of all .image elements and add 1
-    let newZIndex = getHighestZIndex() + 1;
-    currentImage.style.zIndex = newZIndex; // Set the highest z-index for the dragged image
-
-    const computedStyle = window.getComputedStyle(currentImage);
-    const matrix = new WebKitCSSMatrix(computedStyle.transform);
-    initialOffsetX = matrix.m41; 
-    initialOffsetY = matrix.m42;
-
-    e.preventDefault();
-}
-
-
-    function moveDrag(e) {
-        if (!isDragging || !currentImage) return;
-
-        const touch = e.touches ? e.touches[0] : e;
-        const dx = touch.clientX - startX;
-        const dy = touch.clientY - startY;
-
-        if (!moved && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
-            moved = true;
+        function getHighestZIndex() {
+            let highestZIndex = 0;
+            document.querySelectorAll(".box").forEach(box => {
+                const zIndex = parseInt(window.getComputedStyle(box).zIndex, 10) || 0;
+                highestZIndex = Math.max(highestZIndex, zIndex);
+            });
+            return highestZIndex;
         }
 
-        if (moved) {
-            const newX = initialOffsetX + dx;
-            const newY = initialOffsetY + dy;
-            currentImage.style.transform = `translate(${newX}px, ${newY}px)`;
+        function startDrag(e) {
+            if (e.type === "mousedown" && e.button !== 0) return;
+            
+            isDragging = true;
+            currentImage = e.target.closest(".box");
+            moved = false;
+
+            const highestZIndex = getHighestZIndex();
+            currentImage.style.zIndex = highestZIndex + 1;
+
+            const touch = e.touches ? e.touches[0] : e;
+            startX = touch.clientX;
+            startY = touch.clientY;
+
+            const computedStyle = window.getComputedStyle(currentImage);
+            const matrix = new WebKitCSSMatrix(computedStyle.transform);
+            initialOffsetX = matrix.m41;
+            initialOffsetY = matrix.m42;
+
+            e.preventDefault();
         }
+
+        function moveDrag(e) {
+            if (!isDragging || !currentImage) return;
+
+            const touch = e.touches ? e.touches[0] : e;
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+
+            if (!moved && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+                moved = true;
+            }
+
+            if (moved) {
+                const newX = initialOffsetX + dx;
+                const newY = initialOffsetY + dy;
+                currentImage.style.transform = `translate(${newX}px, ${newY}px)`;
+            }
+        }
+
+        function endDrag() {
+            if (!isDragging || !currentImage) return;
+            isDragging = false;
+
+            const highestZIndex = getHighestZIndex();
+            currentImage.style.zIndex = highestZIndex + 1; // Ensure it stays on top
+
+            currentImage = null;
+        }
+
+        images.forEach(image => {
+            image.addEventListener("mousedown", startDrag);
+            image.addEventListener("touchstart", startDrag, { passive: false });
+        });
+
+        document.addEventListener("mousemove", moveDrag);
+        document.addEventListener("touchmove", moveDrag, { passive: false });
+
+        document.addEventListener("mouseup", endDrag);
+        document.addEventListener("touchend", endDrag);
     }
-
-    function endDrag() {
-        if (!isDragging || !currentImage) return;
-
-        isDragging = false;
-
-        // Set the z-index of the image to a high value
-        const highestZIndex = getHighestZIndex();
-        currentImage.style.zIndex = highestZIndex + 1;
-
-        currentImage = null;
-    }
-
-    images.forEach(image => {
-        image.addEventListener("mousedown", startDrag);
-        image.addEventListener("touchstart", startDrag, { passive: false });
-    });
-
-    document.addEventListener("mousemove", moveDrag);
-    document.addEventListener("touchmove", moveDrag, { passive: false });
-
-    document.addEventListener("mouseup", endDrag);
-    document.addEventListener("touchend", endDrag);
-}
-
-
-
-
 
     document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
@@ -382,7 +374,6 @@ function startDrag(e) {
             enableImageDrag();
         }, 100);
     });
-
     window.addEventListener("resize", () => {
 
         const boxes = document.querySelectorAll(".box, .image, .cloned-box");
@@ -394,6 +385,7 @@ function startDrag(e) {
             box.style.height = "";
             box.style.margin = "";
             box.style.zIndex = "1";
+            box.style.transform = "";
         });
 
         repositionImages();
