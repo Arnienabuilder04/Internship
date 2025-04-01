@@ -29,7 +29,6 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            transition: transform 0.2s ease;
             user-select: none;
             pointer-events: none;
 
@@ -40,7 +39,11 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            transition: transform 0.5s ease-in-out;
+        }
+        .image>p{
+            position:absolute;
+            top: 0;
+            left: 0;
         }
 
         .hide {
@@ -57,10 +60,6 @@
             padding: 10px;
             margin: 0;
             font-size: 2rem;
-        }
-
-        .box:hover p{
-            display: block;
         }
 
         .cloned-text{
@@ -84,25 +83,33 @@
         .box, .cloned-box, .image {
             user-select: none;
         }
+
+        .image p {
+            display: none;
+        }
+
+        .image:hover p {
+            display: block;
+        }
     </style>
 </head>
 <body>
     <section class="container">
-        <div class="box"><img class="image" src="https://picsum.photos/id/101/300/500" alt="test 01"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/102/300/500" alt="test 02"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/103/300/500" alt="test 03"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/104/300/500" alt="test 04"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/111/300/500" alt="test 05"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 06"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 07"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/108/300/500" alt="test 08"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/109/300/500" alt="test 09"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/110/300/500" alt="test 10"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/112/300/500" alt="test 11"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/113/300/500" alt="test 12"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/114/300/500" alt="test 13"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/106/300/500" alt="test 14"></div>
-        <div class="box"><img class="image" src="https://picsum.photos/id/107/300/500" alt="test 15"></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/101/300/500" alt="test 01"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/102/300/500" alt="test 02"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/103/300/500" alt="test 03"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/104/300/500" alt="test 04"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/111/300/500" alt="test 05"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/106/300/500" alt="test 06"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/107/300/500" alt="test 07"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/108/300/500" alt="test 08"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/109/300/500" alt="test 09"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/110/300/500" alt="test 10"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/112/300/500" alt="test 11"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/113/300/500" alt="test 12"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/114/300/500" alt="test 13"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/106/300/500" alt="test 14"><p>Caption</p></div></div>
+        <div class="box"><div class="image"><img  src="https://picsum.photos/id/107/300/500" alt="test 15"><p>Caption</p></div></div>
     </section>
 </body>
 <script>
@@ -110,9 +117,9 @@
     const images = container.querySelectorAll(".image");
 
     const gridFormat = true; // true(checkerboard) or false(regular grid)
-    const paramOffsetX = 40; // offset value for x-axis
-    const paramOffsetY = 40; // offset value for y-axis
-    const paramScale = {min:1, max:1.5}; // scale value for images min: minimum scale value, max: maximum scale value
+    const paramOffsetX = 20; // offset value for x-axis
+    const paramOffsetY = 20; // offset value for y-axis
+    const paramScale = {min:0.5, max:1.1}; // scale value for images min: minimum scale value, max: maximum scale value
     //const paramScale = [0.1,0.1,0.1,1]; // scale value for images amount of value = chance of that specific scale
     const firstRow = true; // true(always positive Y axis offset for first row) or false
     const cleanCut = false; //true(let grid always end in a full row)
@@ -169,10 +176,13 @@
                 ? Math.abs((Math.random() - 0.5) * paramOffsetY * scale*1.5) 
                 : (Math.random() - 0.5) * paramOffsetY;
 
-            img.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${scale})`;
+            img.style.transform = `translate(${offsetX}%, ${offsetY}%)`;
+            img.style.scale = scale;
+
             if (img.nextElementSibling) {
                 let caption = img.nextElementSibling;
-                caption.style.transform = `translate(${offsetX}%, ${offsetY}%) scale(${1})`; 
+                caption.style.transform = `translate(${offsetX}%, ${offsetY}%)`; 
+                caption.style.scale = 1;
             }
 
             if (rowIndex % 2 === 1 && (index % columns === columns - 1) && gridFormat === true) {
@@ -206,10 +216,12 @@
                 let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
                 let clonedScale = mappedValue;
 
-                clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${clonedScale})`;
+                clonedImage.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%)`;
+                clonedImage.style.scale = clonedScale;
                 if (clonedBox.querySelector('.cloned-text')) {
                     let caption = clonedBox.querySelector('.cloned-text');
-                    caption.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%) scale(${1})`; 
+                    caption.style.transform = `translate(${clonedOffsetX}%, ${clonedOffsetY}%)`; 
+                    caption.style.scale = 1;
                 }
                
                 clonedBox.appendChild(clonedImage);
@@ -221,11 +233,6 @@
             images2.forEach((image) => {
                 img.style.aspectRatio = boxAspectRatio;
                 image.style.zIndex = Math.floor(Math.random() * 3);
-            
-                image.addEventListener("mouseenter", () => {
-                    let highestZIndex = Math.max(...Array.from(images).map(b => parseInt(b.style.zIndex) || 0));
-                    image.style.zIndex = highestZIndex + 1;
-                });
             });
             const boxes = container.querySelectorAll(".box");
 
@@ -257,7 +264,6 @@
 
         let finalImageCount = finalRows * columns;
         const boxes = container.querySelectorAll(".box");
-        console.log(boxes.length);
 
         container.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
         container.style.gridTemplateRows = `repeat(${finalRows}, 1fr)`;
@@ -284,28 +290,43 @@
 });
 
 function enableImageDrag() {
-    const images = document.querySelectorAll(".image, .cloned-box>img, .box>img");
+    const images = document.querySelectorAll(".image");
     let isDragging = false;
     let currentImage = null;
     let startX = 0, startY = 0;
+    let initialOffsetX = 0, initialOffsetY = 0;
     let moved = false;
+
+    // Function to get the highest z-index
+    function getHighestZIndex() {
+        let highestZIndex = 0;
+        images.forEach(img => {
+            const zIndex = parseInt(window.getComputedStyle(img).zIndex, 10) || 0;
+            highestZIndex = Math.max(highestZIndex, zIndex);
+        });
+        return highestZIndex;
+    }
 
     function startDrag(e) {
         if (e.type === "mousedown" && e.button !== 0) return; // Ignore right-clicks
         
         isDragging = true;
-        currentImage = e.target.closest("img");
+        currentImage = e.target.closest(".box"); // Target the box, not just the image
         moved = false;
+
+        // Get the highest z-index and increment by 1 to ensure this image stays on top
+        const highestZIndex = getHighestZIndex();
+        currentImage.style.zIndex = highestZIndex + 1; // Increment the highest z-index by 1
 
         const touch = e.touches ? e.touches[0] : e;
         startX = touch.clientX;
         startY = touch.clientY;
 
+        // Get the initial transform of the image
         const computedStyle = window.getComputedStyle(currentImage);
         const matrix = new WebKitCSSMatrix(computedStyle.transform);
-        currentImage.dataset.offsetX = matrix.m41; 
-        currentImage.dataset.offsetY = matrix.m42;
-        currentImage.dataset.scale = matrix.a;
+        initialOffsetX = matrix.m41; 
+        initialOffsetY = matrix.m42;
 
         e.preventDefault();
     }
@@ -322,11 +343,9 @@ function enableImageDrag() {
         }
 
         if (moved) {
-            const newX = parseFloat(currentImage.dataset.offsetX) + dx;
-            const newY = parseFloat(currentImage.dataset.offsetY) + dy;
-            currentImage.style.transform = `translate(${newX}px, ${newY}px )`;
-            console.log(currentImage.style);
-
+            const newX = initialOffsetX + dx;
+            const newY = initialOffsetY + dy;
+            currentImage.style.transform = `translate(${newX}px, ${newY}px)`;
         }
     }
 
@@ -334,6 +353,11 @@ function enableImageDrag() {
         if (!isDragging || !currentImage) return;
 
         isDragging = false;
+
+        // Set the z-index of the image to a high value
+        const highestZIndex = getHighestZIndex();
+        currentImage.style.zIndex = highestZIndex + 1;
+
         currentImage = null;
     }
 
@@ -348,6 +372,9 @@ function enableImageDrag() {
     document.addEventListener("mouseup", endDrag);
     document.addEventListener("touchend", endDrag);
 }
+
+
+
 
 
     document.addEventListener("DOMContentLoaded", () => {
