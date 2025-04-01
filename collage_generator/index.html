@@ -297,39 +297,38 @@ function enableImageDrag() {
     let initialOffsetX = 0, initialOffsetY = 0;
     let moved = false;
 
-    // Function to get the highest z-index
     function getHighestZIndex() {
-        let highestZIndex = 0;
-        images.forEach(img => {
-            const zIndex = parseInt(window.getComputedStyle(img).zIndex, 10) || 0;
-            highestZIndex = Math.max(highestZIndex, zIndex);
-        });
-        return highestZIndex;
-    }
+    let highestZIndex = 0;
+    document.querySelectorAll(".image").forEach(imageDiv => { // Target .image elements
+        const zIndex = parseInt(window.getComputedStyle(imageDiv).zIndex, 10) || 0;
+        highestZIndex = Math.max(highestZIndex, zIndex);
+    });
+    return highestZIndex;
+}
 
-    function startDrag(e) {
-        if (e.type === "mousedown" && e.button !== 0) return; // Ignore right-clicks
-        
-        isDragging = true;
-        currentImage = e.target.closest(".box"); // Target the box, not just the image
-        moved = false;
+function startDrag(e) {
+    if (e.type === "mousedown" && e.button !== 0) return; // Ignore right-clicks
 
-        // Get the highest z-index and increment by 1 to ensure this image stays on top
-        const highestZIndex = getHighestZIndex();
-        currentImage.style.zIndex = highestZIndex + 1; // Increment the highest z-index by 1
+    isDragging = true;
+    currentImage = e.target.closest(".image"); // Get the closest .image container
+    moved = false;
 
-        const touch = e.touches ? e.touches[0] : e;
-        startX = touch.clientX;
-        startY = touch.clientY;
+    const touch = e.touches ? e.touches[0] : e;
+    startX = touch.clientX;
+    startY = touch.clientY;
 
-        // Get the initial transform of the image
-        const computedStyle = window.getComputedStyle(currentImage);
-        const matrix = new WebKitCSSMatrix(computedStyle.transform);
-        initialOffsetX = matrix.m41; 
-        initialOffsetY = matrix.m42;
+    // Get the highest z-index of all .image elements and add 1
+    let newZIndex = getHighestZIndex() + 1;
+    currentImage.style.zIndex = newZIndex; // Set the highest z-index for the dragged image
 
-        e.preventDefault();
-    }
+    const computedStyle = window.getComputedStyle(currentImage);
+    const matrix = new WebKitCSSMatrix(computedStyle.transform);
+    initialOffsetX = matrix.m41; 
+    initialOffsetY = matrix.m42;
+
+    e.preventDefault();
+}
+
 
     function moveDrag(e) {
         if (!isDragging || !currentImage) return;
