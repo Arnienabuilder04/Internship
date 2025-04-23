@@ -126,8 +126,8 @@
     const images = container.querySelectorAll(".image");
 
     const gridFormat = true; // true(checkerboard) or false(regular grid)
-    const paramOffsetX = [50, 100]; // min and max offset value for x-axis
-    const paramOffsetY = [100, 400]; // (max. amount of pixels) offset value for y-axis
+    const paramOffsetX = [0, 0]; // min and max offset in pixels for x-axis
+    const paramOffsetY = [0, 0]; // min and max offset in pixels for y-axis
     const paramScale = {min:0.5, max:0.7}; // scale value for images min: minimum scale value, max: maximum scale value
     //const paramScale = [0.1,0.1,0.1,1]; // scale value for images amount of value = chance of that specific scale
     const firstRow = true; // true(always positive Y axis offset for first row) or false
@@ -155,9 +155,8 @@
         let columns = selectedConfig.columns;
 
         let containerWidth = window.innerWidth * (parseFloat(ContainerWidth) / 100);
-        let halfBoxWidth = (containerWidth/columns) / 2;
-        let halfBoxWidthPercentage = (halfBoxWidth / containerWidth) ;
-
+        let halfBoxWidth = (containerWidth/columns)/2;
+        
         gridStructure = grid[grid.indexOf(selectedConfig)];
 
         const existingClones = container.querySelectorAll('.cloned-box');
@@ -190,14 +189,17 @@
 
             let rowIndex = Math.floor(index / columns);
 
-            let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * halfBoxWidth + direction * randomOffsetXMagnitude;
+            let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * halfBoxWidth * (1/scale) + direction * randomOffsetXMagnitude ;
+            console.log(1/scale)
 
             let offsetY = (rowIndex === 0 && firstRow)
-                ? direction * Math.abs((Math.random()) * randomOffsetYMagnitude * scale * 1.5)
+                ? Math.abs(Math.random() * randomOffsetYMagnitude * 1.5)
                 : direction * (Math.random() * randomOffsetYMagnitude);
+                img.style.scale = scale;
 
             img.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
-            img.style.scale = scale;
+            img.style.transformOrigin = 'center center'; // This is the default, but it's good to be explicit
+
 
             if (rowIndex % 2 === 1 && (index % columns === columns - 1) && gridFormat === true) {
                 img.style.opacity = "0"; 
@@ -226,7 +228,7 @@
                 clonedImage.style.opacity = "1"; 
 
                 let clonedRowIndex = Math.floor((images.length + 1) / columns); 
-                let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1) * ( halfBoxWidth ) + ((Math.random() - 0.5) * paramOffsetX);
+                let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1) * ( halfBoxWidth ) + (direction * randomOffsetXMagnitude);
                 let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
                 let clonedScale = mappedValue;
 
