@@ -117,12 +117,8 @@
             <div id='signature'>
                 <span style="font-size: 14px; font-weight:600; color: black;">your name</span><br>
                 <span style="font-size: 14px; font-weight:400; color: black;">your role</span><br><br>
-                <div style="display: flex; flex-direction: row; align-items: center; gap: 5px;">
-                    <a style="text-decoration:none!important;color:inherit!important;" href="#">your phone</a>
-                    <p>|</p>
-                    <a style="text-decoration:none!important;color:inherit!important;" href="https://www.zroimaging.com">zroimaging.com</a>
-                </div><br><br>
-                <img src="./logo_black_2.png" alt="ZRO Logo" style="width: 11em; height:1.84343991em;">
+                <span style="font-size: 14px; font-weight:400; color: black;">123 456 789 | zro.bio</span> <br><br>
+                <img src="./logo_black.png" alt="ZRO Logo" style="width: 100px;">
             </div>
         </div>
         <button class="copy-btn" onclick="copySignature()">Copy</button>
@@ -132,8 +128,9 @@
         fill="rgb(150, 150, 150)"/>
     </svg>
     <script>
-          const logoBlack = "https://zroimaging.com/_signature/logo_black_2.png";
-          const logoWhite = "https://zroimaging.com/_signature/logo_white_2.png";
+        const logoBlack = "https://zroimaging.com/_signature/logo_black.png";
+        const logoWhite = "https://zroimaging.com/_signature/logo_white.png";
+        
 
         const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
         console.log(window.matchMedia('(prefers-color-scheme: dark)').matches);
@@ -164,12 +161,8 @@
                 <div id='signature'>
                     <span style="font-size: 14px; font-weight:600; color: ${autoColor};">${name ? name : "name"}</span><br>
                     <span style="font-size: 14px; font-weight:400; color: ${autoColor};">${role ? role : "role"}</span><br><br>
-                    <p style="white-space:nowrap; margin:0;">
-                        <a style="white-space:nowrap; display:inline-block; text-decoration:none!important;color:${autoColor}!important;" href="tel:${phone}">${phone ? phone : "your phone"}</a>
-                        <span style="white-space:nowrap; display:inline-block; color:${autoColor};">  |  </span>
-                        <a style="white-space:nowrap; display:inline-block; text-decoration:none!important;color:${autoColor}!important;" href="https://www.zroimaging.com">zroimaging.com</a>
-                    </p><br><br>
-                <img src="${logoSrc}" alt="ZRO Logo" style="width: 11em; height:1.84343991em;">
+                    <span style="font-size: 14px; font-weight:400; color: ${autoColor};">${phone ? phone : "phone"} | zro.bio</span> <br><br>
+                    <img src="${logoSrc}" alt="ZRO Logo" style="width: 100px;">
                 </div>
             `;
             document.getElementById("signature__container").innerHTML = signatureHTML;
