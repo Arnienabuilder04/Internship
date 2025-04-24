@@ -112,13 +112,7 @@
         <div class="box"><div class="image"><img  src="https://picsum.photos/id/114/300/500" alt="test 13"><p>Caption</p></div></div>
         <div class="box"><div class="image"><img  src="https://picsum.photos/id/106/300/500" alt="test 14"><p>Caption</p></div></div>
         <div class="box"><div class="image"><img  src="https://picsum.photos/id/107/300/500" alt="test 15"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/109/300/500" alt="test 09"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/110/300/500" alt="test 10"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/112/300/500" alt="test 11"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/113/300/500" alt="test 12"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/114/300/500" alt="test 13"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/106/300/500" alt="test 14"><p>Caption</p></div></div>
-        <div class="box"><div class="image"><img  src="https://picsum.photos/id/107/300/500" alt="test 15"><p>Caption</p></div></div>
+      
     </section>
 </body>
 <script>
@@ -128,7 +122,7 @@
     const gridFormat = true; // true(checkerboard) or false(regular grid)
     const paramOffsetX = [0, 100]; // min and max offset in pixels for x-axis
     const paramOffsetY = [0, 100]; // min and max offset in pixels for y-axis
-    const paramScale = {min:0.5, max:0.7}; // scale value for images min: minimum scale value, max: maximum scale value
+    const paramScale = {min:0.7, max:1}; // scale value for images min: minimum scale value, max: maximum scale value
     //const paramScale = [0.1,0.1,0.1,1]; // scale value for images amount of value = chance of that specific scale
     const firstRow = true; // true(always positive Y axis offset for first row) or false
     const cleanCut = false; //true(let grid always end in a full row)
@@ -177,6 +171,7 @@
                 let i = Math.floor(Math.random() * paramScale.length);
                 mappedValue = paramScale[i];
             }
+            
             let scale = mappedValue;
             const minOffsetX = paramOffsetX[0];
             const maxOffsetX = paramOffsetX[1];
@@ -190,60 +185,37 @@
             let rowIndex = Math.floor(index / columns);
 
             let offsetX = (rowIndex % 2 === 0 ? 0 : 1) * halfBoxWidth * (1/scale) + direction * randomOffsetXMagnitude ;
-            console.log(1/scale)
 
             let offsetY = (rowIndex === 0 && firstRow)
                 ? Math.abs(Math.random() * randomOffsetYMagnitude * 1.5)
                 : direction * (Math.random() * randomOffsetYMagnitude);
                 img.style.scale = scale;
 
-            img.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
 
 
             if (rowIndex % 2 === 1 && (index % columns === columns - 1) && gridFormat === true) {
                 img.style.opacity = "0"; 
-                if (img.nextElementSibling) {
-                    img.nextElementSibling.style.display = "none";
-                }
+
+                let clonedRowIndex = Math.floor((images.length + 1) / columns); 
+                let clonedOffsetX =  (direction * randomOffsetXMagnitude);
+                let clonedOffsetY = (direction * randomOffsetYMagnitude);
+                let clonedScale = mappedValue;
 
                 const clonedBox = document.createElement('div');
                 clonedBox.classList.add('box', 'cloned-box'); 
                 const clonedImage = img.cloneNode(true);
-
-                if (img.nextElementSibling) {
-                    const clonedText = img.nextElementSibling.cloneNode(true);
-                    clonedText.style.display = "none";
-                    clonedText.classList.add('cloned-text');
-                    clonedBox.appendChild(clonedText);
-
-                    clonedBox.addEventListener("mouseenter", () => {
-                        clonedText.style.display = "block";
-                    });
-                    clonedBox.addEventListener("mouseleave", () => {
-                        clonedText.style.display = "none";
-                    });
-                }
+                clonedImage.style.transform = `translate(${clonedOffsetX}px, ${clonedOffsetY}px)`;
 
                 clonedImage.style.opacity = "1"; 
-
-                let clonedRowIndex = Math.floor((images.length + 1) / columns); 
-                let clonedOffsetX = (clonedRowIndex % 2 === 0 ? 0 : 1)  + (direction * randomOffsetXMagnitude);
-                let clonedOffsetY = (Math.random() - 0.5) * paramOffsetY;
-                let clonedScale = mappedValue;
-
-                clonedImage.style.transform = `translate(${clonedOffsetX}px, ${clonedOffsetY}px)`;
                 clonedImage.style.scale = clonedScale;
-                if (clonedBox.querySelector('.cloned-text')) {
-                    let caption = clonedBox.querySelector('.cloned-text');
-                    caption.style.transform = `translate(${clonedOffsetX}px, ${clonedOffsetY}px)`; 
-                    caption.style.scale = 1;
-                }
                
                 clonedBox.appendChild(clonedImage);
                 container.appendChild(clonedBox);
             } else {
                 img.style.opacity = "1"; 
+                img.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
             }
+
             const images2 = container.querySelectorAll(".image");
             images2.forEach((image) => {
                 img.style.aspectRatio = boxAspectRatio;
