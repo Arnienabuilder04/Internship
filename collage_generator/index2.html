@@ -125,7 +125,7 @@
     const paramScale = {min:0.7, max:1}; // scale value for images min: minimum scale value, max: maximum scale value
     //const paramScale = [0.1,0.1,0.1,1]; // scale value for images amount of value = chance of that specific scale
     const firstRow = true; // true(always positive Y axis offset for first row) or false
-    const cleanCut = false; //true(let grid always end in a full row)
+    const cleanCut = true; //true(let grid always end in a full row)
     const boxAspectRatio = "auto"; // aspect ratio for the boxes
     const GapXaxis = "0vw"; // gap between the boxes on the x-axis
     const GapYaxis = "0vw"; // gap between the boxes on the y-axis
@@ -135,8 +135,8 @@
         { "max-width": 760, "columns": 2, "rows": 2 }, 
         { "max-width": 1280, "columns": 3 , "rows": 4 }, 
         { "max-width": 1660, "columns": 6, "rows": 3 }, 
-        { "max-width": 1920, "columns": 6 }, 
-        { "max-width": 2560, "columns": 6  }, 
+        { "max-width": 1920, "columns": 6, }, 
+        { "max-width": 2560, "columns": 6,  }, 
         { "max-width": 3840, "columns": 8 }
     ];
 
@@ -237,18 +237,18 @@
         let numImages = images.length;
         let calculatedRows = Math.ceil(numImages / columns);
         let remainingImages = numImages % columns;
+        console.log(remainingImages)
 
         let finalRows;
         if (rows === "auto") {
             finalRows = calculatedRows; 
         } else {
-            if (images.length < (columns * rows) && cleanCut == true) {
+            if (images.length < (columns * rows) && cleanCut == true) {    
                 finalRows = Math.floor(images.length / columns); 
             } else {
                 finalRows = rows;
             }
         }
-
         let finalImageCount = finalRows * columns;
         const boxes = container.querySelectorAll(".box");
 
