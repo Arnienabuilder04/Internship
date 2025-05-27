@@ -389,6 +389,8 @@ function enableImageDrag() {
             enableImageDrag();
         }, 100);
     });
+    
+    if (!window.matchMedia("(pointer: coarse)").matches) {
     window.addEventListener("resize", () => {
 
         const boxes = document.querySelectorAll(".box, .image, .cloned-box");
@@ -407,5 +409,6 @@ function enableImageDrag() {
         enableImageDrag();
 
     });
+}
 </script>
 </html>
